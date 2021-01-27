@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SampleGame;
 
 namespace LevelManagement {
   [RequireComponent(typeof(Canvas))]
@@ -9,6 +10,19 @@ namespace LevelManagement {
 
     }
 
+    public void OnPlayPressed () {
+      GameManager gameManager = Object.FindObjectOfType<GameManager>();
+      if (gameManager != null) {
+        gameManager.LoadNextLevel();
+      }
+    }
 
+    public void OnSettingsPressed () {
+
+    }
+
+    public void OnCreditsPressed () {
+
+    }
   }
 }

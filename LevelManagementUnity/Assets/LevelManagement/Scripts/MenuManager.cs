@@ -11,6 +11,8 @@ namespace LevelManagement {
     [SerializeField]
     private Transform _menuParent;
 
+    private Stack<Menu> _menuStack = new Stack<Menu>();
+
     private void Awake () {
       InitializeMenus();
     }
@@ -29,9 +31,40 @@ namespace LevelManagement {
           if (prefab != mainMenuPrefab) {
             menuInstance.gameObject.SetActive(false);
           } else {
-
+            OpenMenu(menuInstance);
           }
         }
+      }
+    }
+
+    public void OpenMenu (Menu menuInstance) {
+      if (menuInstance == null) {
+        Debug.LogWarning("MENUMANAGER OpenMenu ERROR: invailed menu");
+        return;
+      }
+
+      if (_menuStack.Count > 0) {
+        foreach (Menu menu in _menuStack) {
+          menu.gameObject.SetActive(false);
+        }
+      }
+
+      menuInstance.gameObject.SetActive(true);
+      _menuStack.Push(menuInstance);
+    }
+
+    public void CloseMenu () {
+      if (_menuStack.Count == 0) {
+        Debug.LogWarning("MENUMANAGER CloseMenu ERROR: No menus in stack!");
+        return;
+      }
+
+      Menu topMenu = _menuStack.Pop();
+      topMenu.gameObject.SetActive(false);
+
+      if (_menuStack.Count > 0) {
+        Menu nextMenu = _menuStack.Peek();
+        nextMenu.gameObject.SetActive(true);
       }
     }
   }
